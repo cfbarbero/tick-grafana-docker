@@ -5,7 +5,7 @@ services:
   telegraf:
     image: telegraf
     volumes:
-      - ./etc/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
     links:
       - influxdb
     ports:
@@ -16,7 +16,7 @@ services:
   influxdb:
     image: influxdb
     volumes:
-      - ./data/influxdb:/var/lib/influxdb
+      - ./influxdb/data:/var/lib/influxdb
     ports:
       - "8086:8086"
   # Define a Chronograf service
@@ -47,6 +47,9 @@ services:
       - "3000:3000"
     env_file:
       - 'env.grafana'
+    volumes:
+      - ./grafana/etc/:/etc/grafana
+      - ./grafana/data/:/var/lib/grafana
     links:
       - influxdb
 
