@@ -42,14 +42,18 @@ services:
       - "9092:9092"
   # Define a grafana service
   grafana:
+    depends_on: [influxdb]
     image: grafana/grafana:latest
+    user: root
     ports:
       - "3000:3000"
     env_file:
       - 'env.grafana'
     volumes:
       - ./grafana/etc/:/etc/grafana
+      - ./grafana/etc/provisioning/notifiers:/etc/grafana/provisioning/notifiers
       - ./grafana/data/:/var/lib/grafana
+      - ./grafana/data/dashboards:/var/lib/grafana/dashboards
     links:
       - influxdb
 
